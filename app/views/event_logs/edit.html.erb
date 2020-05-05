@@ -1,0 +1,201 @@
+<%= form_for @event_log, url: {controller: "event_logs", action: "update"} do |f| %>
+  <% if @event_log.errors.any? %>
+    <div class="alert alert-danger">
+      <strong>Opss! Alguns erros foram encontrados</strong><br>
+      <% @event_log.errors.messages.values.each do |value| %>
+        <% value.each do |message| %>
+          <%= message %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="card-body">
+        <h1 class="text-left">Atualizar Ocorrência</h1>
+      </div>
+  </div>
+  <hr><br>
+
+  <div class="row">
+    <div class="card-body">
+      <h4 class="text-center">Digite o endereço da ocorrência</h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-6">
+        <div class="form-group">
+        <%= collection_select(:event_log, :address, Address.order(:name).all, :id, :name_with_district_name, {:selected => @event_log.address.id, :include_blank => 'Selecione o endereço'}, { :multiple => false,  :required => true, :class => "form-control form-control-sm"   }) %>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <%= f.number_field :number, :required => true, placeholder: "Altura/Número", class: "form-control form-control-sm" %>
+        </div>
+      </div>
+    <div class="col-sm-2"></div>
+  </div>
+
+  <div class="row">
+      <div class="card-body">
+        <h4 class="text-center">Atualize os dados da ocorrência</h4>
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <%= label_tag "Data", nil, class: 'required' %>
+          <%= f.date_field :date, :required => true, class: "form-control form-control-sm" %>
+        </div>
+      </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <%= label_tag "Horário de saída", nil, class: 'required' %>
+            <%= f.time_field :exit_time, :required => true,  class: "form-control form-control-sm" %>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <%= label_tag "Horário de retorno", nil, class: 'required' %>
+            <%= f.time_field :return_time, :required => true, class: "form-control form-control-sm" %>
+          </div>
+        </div>
+    <div class="col-sm-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <%= label_tag "Solicitante", nil, class: 'required' %>
+          <%= f.text_field :requester, :required => true, placeholder: "Nome vitima principal", class: "form-control form-control-sm" %>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <%= label_tag "Telefone", nil, class: 'required' %>
+          <%= f.number_field :phone, :required => true, placeholder: "54988776655", class: "form-control form-control-sm" %>
+          </div>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="form-group">
+              <%= label_tag "Memorial descritivo", nil, class: 'required' %>
+              <%= f.text_area :descriptive_memorial, :required => true, placeholder: "Chegando no local foi constado que...", class: "form-control form-control-sm" %>
+            </div>
+        </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+           <div class="form-group">
+            <%= label_tag "Providências tomadas", nil, class: 'required' %>
+            <%= f.text_area :measures_taken, :required => true, placeholder: "Foram tomadas as segiuntes providências", class: "form-control form-control-sm" %>
+          </div>
+        </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <%= label_tag "Obeservações" %>
+          <%= f.text_area :comments, placeholder: "Veículo sem documentação", class: "form-control form-control-sm" %>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <%= label_tag "Condições climáticas", nil, class: 'required' %>
+        <%= f.text_area :climate_conditions, :required => true, placeholder: "Nublado com muito vento", class: "form-control form-control-sm" %>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="card-body">
+        <h4 class="text-center">Selecione os bombeiros envolvidos na ocorrência</h4>
+      </div>
+    </div>
+
+    <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="form-group">
+          <div class="row">
+            <% Firefighter.order(:name).all.in_groups_of(3, false) do |firefighters| %>
+                <% for firefighter in firefighters %>
+                  <div class="col-sm-4">
+                    <label>
+                      <%= check_box_tag "firefighters[]", firefighter.id, @event_log.firefighters.exists?(firefighter.id) %>
+                      <%= firefighter.name %> <%= firefighter.last_name %>
+                    </label> 
+                  </div>
+                <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <div class="col-sm-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="card-body">
+      <h4 class="text-center">Selecione as viaturas envolvidas na ocorrência</h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="form-group">
+          <div class="row">
+            <% Car.order(:name).all.in_groups_of(3, false) do |cars| %>
+                <% for car in cars %>
+                  <div class="col-sm-4">
+                    <label>
+                      <%= check_box_tag "cars[]", car.id, @event_log.cars.exists?(car.id) %>
+                      <%= car.name %> - <%= car.number%>
+                    </label> 
+                  </div>
+                <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="form-check">
+          <%= label_tag "Ocorrência aprovada?" %>
+        </div>
+        <div class="form-check form-check-inline">
+          Sim
+          <%= f.radio_button :finished, true, class: "form-inline" %>
+        </div>
+        <div class="form-check form-check-inline">
+          Não
+          <%= f.radio_button :finished, false, class: "form-inline" %>
+        </div><br><br>
+        <div class="form-group">
+            <%= f.submit "Atualizar", class: "btn btn-default" %>
+            <%= link_to "Voltar", {controller: "type_occurrences", action: "index"}, class: "btn btn-link" %>
+          </div>
+      </div>
+    <div class="col-sm-2"></div>
+  </div>
+
+<% end %>

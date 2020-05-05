@@ -1,0 +1,80 @@
+Criar modelos
+rails generate model Article title:string text:text
+
+Criar tabela
+rails generate migration CreateProducts name:string part_number:string
+
+Confirmar migração
+rails db:migrate
+
+Deletar banco
+rake db:drop
+
+Resetar banco
+rake db:reset
+
+Criar banco
+rake db:create
+
+Renomear coluna da tabela
+rails g migration RenameColumnTypeFirefighterInTableFirefightersToCommandant
+
+  def change
+  	rename_column :firefighters, :type_firefighter, :commandant
+  end
+
+Excluir coluna de uma tabela
+rails generate migration RemoveTypeCarFromCars type_car:string
+
+Adicionar coluna
+rails generate migration AddRenewPasswordToFirefighters
+  
+  def change
+  	add_column :firefighters, :renew_password, :boolean, default:true
+  end
+
+Ralacionamento belongs_to
+rails g migration AddCarOfTyprRefToCars car_of_type:references
+
+  def change
+    add_reference :cars, :type_of_cars, index: true, foreign_key: true
+  end
+
+Remover id de relacionamento
+rails g migration RemoveCarFromTypeOfCars car:references
+
+  def change
+    remove_reference :type_of_car, :car, foreign_key: true
+  end
+
+União de tabelas
+rails g migration CreateJoinTableCustomerProduct customer product
+  
+  def change
+    create_join_table :cars, :event_logs do |t|
+       t.index [:car_id, :event_log_id]
+       t.index [:event_log_id, :car_id]
+    end
+  end
+
+Quando o nome for longo de mais
+rails g migration CreateJoinTableFirefighterEventLog firefighter event_log
+
+  def change
+    create_join_table :firefighters, :event_logs do |t|
+      t.index [:firefighter_id, :event_log_id], name: :idx_firefighter_eventlog
+      t.index [:event_log_id, :firefighter_id], name: :idx_eventlog_firefighter
+    end
+  end
+
+Controller com duas palavras 
+rails g controller typeOcurrences
+
+
+Hash - Map
+ <ul>
+    <% @event_log_groups.collect { |event_log, count| %>
+      <li><%= event_log.name %> - <%= count %></li>
+    <% } %>
+  </ul>
+

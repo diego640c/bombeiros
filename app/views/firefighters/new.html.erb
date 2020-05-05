@@ -1,0 +1,121 @@
+<%= form_for @firefighter, url: {controller: "firefighters", action: "create"} do |f| %>
+
+	<% if @firefighter.errors.any? %>
+		<div class="alert alert-danger" role="alert">
+			<strong>Opss! Alguns erros foram encontrados</strong><br>
+			<% @firefighter.errors.messages.values.each do |value| %>
+				<% value.each do |message| %>
+					<%= message %> <br>
+				<% end %>
+			<% end %>
+		</div>
+	<% end %>
+
+	<div class="row">
+	  <div class="card-body">
+	    <h1 class="text-left">Novo Bombeiro</h1>
+	  </div>
+	</div>
+	<hr><br>
+
+
+	<div class="row">
+		<div class="col-sm-2"></div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<%= label_tag "Nome", nil, class: 'required' %>
+					<%= f.text_field :name, :required => true, placeholder: "Nome", class: "form-control form-control-sm" %>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<%= label_tag "Sobrenome", nil, class: 'required' %>
+					<%= f.text_field :last_name, :required => true, placeholder: "Sobrenome", class: "form-control form-control-sm" %>
+				</div>
+			</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2"></div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<%= label_tag "Telefone", nil, class: 'required' %>
+					<%= f.text_field :phone, :required => true, placeholder: "54988776655", class: "mask-phone form-control form-control-sm" %>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<%= label_tag "E-mail", nil, class: 'required' %>
+					<%= f.email_field :email, :required => true, placeholder: "nome@provedor.com.br", class: "form-control form-control-sm" %>
+				</div>
+			</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2"></div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<%= label_tag "Código de Matricula", nil, class: 'required' %>
+					<%= f.text_field :registration, :required => true, placeholder: "11223344", class: "form-control form-control-sm" %>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<%= label_tag "Data de Nascimento", nil, class: 'required' %>
+					<%= f.date_field :birth_date, :required => true, class: " form-control form-control-sm" %>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="form-group">
+         <%= label_tag "Tipo Sanguíneo", nil, class: 'required' %>
+         <%= f.select :type_blood, [['A+'], ['A-'], ['B+'], ['B-'], ['AB+'], ['AB+'], ['AB-'], ['O+'],['O-']], {:include_blank => 'Tipo sanguíneo'}, { :multiple => false, :required => true, :class => "form-control form-control-sm" } %>
+        </div>
+			</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-3">
+			<div class="form-check">
+				<%= label_tag "É comandante?" %>
+			</div>
+			<div class="form-check form-check-inline">
+				Sim
+				<%= f.radio_button :commandant, true, class: "form-inline" %>
+			</div>
+			<div class="form-check form-check-inline">
+				Não
+				<%= f.radio_button :commandant, false, class: "form-inline" %>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="form-check">
+				<%= label_tag "Renovar senha?" %>
+			</div>
+			<div class="form-check form-check-inline">
+				Sim
+				<%= f.radio_button :renew_password, true, class: "form-inline" %>
+			</div>
+			<div class="form-check form-check-inline">
+				Não
+				<%= f.radio_button :renew_password, false, class: "form-inline" %>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<%= label_tag "Senha padrão" %>
+			<input class="form-control" type="text" placeholder="*******" readonly>
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<div class="form-group">
+				<%= f.submit "Cadastrar", class: "btn btn-default"  %>
+				<%= link_to "Voltar", {controller: "firefighters", action: "index"}, class: "btn btn-link" %>
+			</div>
+		</div>
+		<div class="2"></div>
+	</div>
+<% end %>
